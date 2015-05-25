@@ -8,14 +8,20 @@ from bs4 import BeautifulSoup
 import re
 
 
+# TODO Auto strip slash on end of path
+# TODO Check if output directory exists, create it if not
+# TODO Add duplicate detection
+# TODO Add failed download output
+
 ###########################
 #   CONFIGURATION AREA   ##
 ###########################
 
-STARTING_EPISODE = 336
-ENDING_EPISODE = 350
+STARTING_EPISODE = 1
+ENDING_EPISODE = 13
 DOWNLOAD_THREADS = 5
-OUTPUT_DIRECTORY = r"C:\path\to\desired\download\location" # Do Not Include Trailing Slash In Path
+OUTPUT_DIRECTORY = r"G:\your\download\path" # Do Not Include Trailing Slash In Path
+
 
 ##############################
 #   END CONFIGURATION AREA   #
@@ -54,15 +60,21 @@ def get_episode_name(ep_number):
     :param ep_number:
     :return:
     """
+    current_page = 1
 
-    response = urllib.request.urlopen("http://www.thisamericanlife.org/search?keys=" + str(ep_number))
-    page = BeautifulSoup(response)
+    # Search up to 20 pages of results for episode name.
+    while current_page <= 20:
 
-    for h3 in page.find_all('h3'):
+        response = urllib.request.urlopen("http://www.thisamericanlife.org/search?page=" + str(current_page) + "&keys=" + str(ep_number))
+        page = BeautifulSoup(response)
 
-        if h3.string[0:3] == str(ep_number):
-            cleaned_filename = re.sub(r'[/\\:*?"<>|\']', '', h3.string[5:])
-            return cleaned_filename
+        for h3 in page.find_all('h3'):
+
+            if h3.string[0:len(str(ep_number))] == str(ep_number):
+                cleaned_filename = re.sub(r'[/\\:*?"<>|\']', '', h3.string[len(str(ep_number)) + 2:])
+                return cleaned_filename
+
+        current_page += 1
 
     return 'UNKNOWN EPISODE NAME'
 
