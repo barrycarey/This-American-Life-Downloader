@@ -8,9 +8,9 @@ from bs4 import BeautifulSoup
 import re
 
 
-##########################
-#   CONFIGURATION AREA   #
-##########################
+###########################
+#   CONFIGURATION AREA   ##
+###########################
 
 STARTING_EPISODE = 336
 ENDING_EPISODE = 350
