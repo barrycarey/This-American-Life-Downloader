@@ -18,9 +18,9 @@ import re
 ###########################
 
 STARTING_EPISODE = 1
-ENDING_EPISODE = 13
-DOWNLOAD_THREADS = 5
-OUTPUT_DIRECTORY = r"G:\your\download\path" # Do Not Include Trailing Slash In Path
+ENDING_EPISODE = 355
+DOWNLOAD_THREADS = 10
+OUTPUT_DIRECTORY = r"C:\You\Path\Here" # Do Not Include Trailing Slash In Path
 
 
 ##############################
@@ -64,18 +64,22 @@ def get_episode_name(ep_number):
 
     # Search up to 20 pages of results for episode name.
     while current_page <= 20:
-
         response = urllib.request.urlopen("http://www.thisamericanlife.org/search?page=" + str(current_page) + "&keys=" + str(ep_number))
         page = BeautifulSoup(response)
 
         for h3 in page.find_all('h3'):
 
-            if h3.string[0:len(str(ep_number))] == str(ep_number):
+            # Add 1 to number of digits in current episode number. This pulls in the : on the correct match.
+            target = h3.string[0:len(str(ep_number)) + 1]
+            matcher = str(ep_number) + ':'
+
+            if target == matcher:
                 cleaned_filename = re.sub(r'[/\\:*?"<>|\']', '', h3.string[len(str(ep_number)) + 2:])
                 return cleaned_filename
 
         current_page += 1
 
+    print("[X] Failed To Find Title For Episode Number " + str(ep_number))
     return 'UNKNOWN EPISODE NAME'
 
 
