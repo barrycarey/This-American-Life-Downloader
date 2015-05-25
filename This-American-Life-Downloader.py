@@ -1,4 +1,4 @@
-__author__ = 'Jeromy'
+__author__ = 'Barry Carey'
 import os
 import threading
 import urllib.request
