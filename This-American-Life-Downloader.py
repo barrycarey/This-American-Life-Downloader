@@ -15,7 +15,7 @@ import re
 STARTING_EPISODE = 336
 ENDING_EPISODE = 350
 DOWNLOAD_THREADS = 5
-OUTPUT_DIRECTORY = r"C:\Users\Jeromy\Downloads\dl_test" # Do Not Include Trailing Slash In Path
+OUTPUT_DIRECTORY = r"C:\path\to\disired\download\location" # Do Not Include Trailing Slash In Path
 
 ##############################
 #   END CONFIGURATION AREA   #
